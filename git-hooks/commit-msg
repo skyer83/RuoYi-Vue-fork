@@ -1,0 +1,30 @@
+#!/bin/sh
+# Git 提交规范校验（纯Git钩子，无任何依赖）
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# 必须满足：前缀 + 英文冒号 + 空格 + 描述
+PATTERN="^(feat|fix|docs|style|refactor|test|chore|perf|ci|revert):\s.+"
+
+if ! echo "$COMMIT_MSG" | grep -qE "$PATTERN"; then
+  echo ""
+  echo "❌ 提交失败！格式不符合规范"
+  echo ""
+  echo "✅ 正确格式：类型: 简要描述（冒号后必须有空格）"
+  echo "示例：feat: 新增用户登录功能"
+  echo ""
+  echo "✅ 允许的前缀类型："
+  echo "feat:     新功能"
+  echo "fix:      修复bug"
+  echo "docs:     文档修改"
+  echo "style:    代码格式（空格、缩进、分号）"
+  echo "refactor: 代码重构"
+  echo "test:     测试用例"
+  echo "chore:    构建/依赖/工具修改"
+  echo "perf:     性能优化"
+  echo "ci:       CI配置"
+  echo "revert:   回滚提交"
+  echo ""
+  exit 1
+fi
