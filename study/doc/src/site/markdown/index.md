@@ -6,6 +6,4 @@
 ## 快速开始
 - 克隆仓库：`git clone https://github.com/xxx/demo-site.git`
 - 构建站点：`mvn clean site`
-- 
-## 目录
-- [maven-archetype-site使用说明](./26040301_maven-archetype-site/26040301_目录.md)
+
