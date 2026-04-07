@@ -4,11 +4,13 @@
   xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
   <bannerLeft>
     <name>Maven</name>
-    <src>http://maven.apache.org/images/apache-maven-project.png</src>
+<!--    <src>http://maven.apache.org/images/apache-maven-project.png</src>-->
+    <src>images/apache-maven-project.png</src>
     <href>http://maven.apache.org/</href>
   </bannerLeft>
   <bannerRight>
-    <src>http://maven.apache.org/images/maven-small.gif</src>
+<!--    <src>http://maven.apache.org/images/maven-small.gif</src>-->
+    <src>images/maven-small.gif</src>
   </bannerRight>
 
   <body>
