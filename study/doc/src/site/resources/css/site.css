@@ -1,0 +1,43 @@
+/*
+ * 自定义样式：菜单栏宽度自适应
+ */
+
+/* 左侧菜单栏自适应宽度 */
+#leftColumn {
+    width: auto !important;
+    min-width: 180px;
+    max-width: 350px;
+    white-space: nowrap;
+}
+
+/* 菜单项内容不换行，确保宽度计算正确 */
+#leftColumn li {
+    white-space: nowrap;
+}
+
+/* 主内容区域自动填充剩余空间 */
+#bodyColumn {
+    margin-left: auto !important;
+    /* 留出足够的左边距 */
+    margin-left: 20px;
+}
+
+/* 当菜单宽度变化时，调整布局 */
+#bodyColumn {
+    display: block;
+    margin-left: 200px;
+}
+
+/* 响应式布局：小屏幕时菜单占满宽度 */
+@media screen and (max-width: 768px) {
+    #leftColumn {
+        width: 100% !important;
+        max-width: 100%;
+        float: none;
+    }
+    
+    #bodyColumn {
+        margin-left: 0 !important;
+        float: none;
+    }
+}
