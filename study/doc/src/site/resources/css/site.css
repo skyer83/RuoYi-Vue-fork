@@ -1,5 +1,5 @@
 /*
- * 自定义样式：菜单栏宽度自适应
+ * 自定义样式：菜单栏宽度自适应 + 拖拽调整
  */
 
 /* 左侧菜单栏自适应宽度 */
@@ -8,6 +8,7 @@
     min-width: 180px;
     max-width: 350px;
     white-space: nowrap;
+    position: relative;
 }
 
 /* 菜单项内容不换行，确保宽度计算正确 */
@@ -17,15 +18,25 @@
 
 /* 主内容区域自动填充剩余空间 */
 #bodyColumn {
-    margin-left: auto !important;
-    /* 留出足够的左边距 */
-    margin-left: 20px;
+    display: block;
+    margin-left: 220px;
+    transition: margin-left 0.1s ease;
 }
 
-/* 当菜单宽度变化时，调整布局 */
-#bodyColumn {
-    display: block;
-    margin-left: 200px;
+/* 拖拽条样式 */
+#menuResizer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    cursor: col-resize;
+    background: transparent;
+    z-index: 1000;
+}
+
+#menuResizer:hover {
+    background: #ccc !important;
 }
 
 /* 响应式布局：小屏幕时菜单占满宽度 */
@@ -39,5 +50,9 @@
     #bodyColumn {
         margin-left: 0 !important;
         float: none;
+    }
+    
+    #menuResizer {
+        display: none;
     }
 }
