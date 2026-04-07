@@ -80,7 +80,7 @@
 
                                             var resizer = document.createElement('div');
                                             resizer.id = 'menuResizer';
-                                            resizer.style.cssText = 'position:absolute;right:0;top:0;bottom:0;width:5px;cursor:col-resize;background:transparent;z-index:1000';
+                                            resizer.style.cssText = 'position:absolute;right:0;top:0;bottom:0;width:5px;cursor:col-resize;background:transparent;z-index:1003';
                                             leftColumn.style.position = 'relative';
                                             leftColumn.appendChild(resizer);
 
@@ -124,6 +124,74 @@
                                               leftColumn.style.maxWidth = savedWidth + 'px';
                                               bodyColumn.style.marginLeft = (savedWidth + 20) + 'px';
                                             }
+
+                                            // ========== 收起/展开整个侧边栏按钮 ==========
+                                            var sidebarToggleBtn = document.createElement('button');
+                                            sidebarToggleBtn.id = 'sidebarToggleBtn';
+                                            sidebarToggleBtn.innerHTML = '<<';
+                                            sidebarToggleBtn.style.cssText = 'position:absolute;right:0;top:0;width:24px;padding:0;background:#f5f5f5;color:#666;border:none;border-left:1px solid #ddd;cursor:pointer;z-index:1002;font-size:14px;font-weight:bold;transition:background 0.2s;';
+                                            sidebarToggleBtn.onmouseenter = function() { this.style.background = '#e0e0e0'; };
+                                            sidebarToggleBtn.onmouseleave = function() { this.style.background = '#f5f5f5'; };
+                                            leftColumn.appendChild(sidebarToggleBtn);
+
+                                            var isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+                                            var originalWidth = parseInt(localStorage.getItem('sidebarOriginalWidth')) || 350;
+                                            var collapsedWidth = 24;
+
+                                            function updateToggleBtn() {
+                                              if (isSidebarCollapsed) {
+                                                sidebarToggleBtn.innerHTML = '>>';
+                                                sidebarToggleBtn.style.right = '0';
+                                              } else {
+                                                sidebarToggleBtn.innerHTML = '<<';
+                                                sidebarToggleBtn.style.right = '5px';
+                                              }
+                                            }
+
+                                            var navColumn = document.getElementById('navcolumn');
+
+                                            function toggleSidebar() {
+                                              if (isSidebarCollapsed) {
+                                                // 展开
+                                                leftColumn.style.width = originalWidth + 'px';
+                                                leftColumn.style.maxWidth = originalWidth + 'px';
+                                                leftColumn.style.minWidth = '180px';
+                                                leftColumn.style.overflow = 'visible';
+                                                bodyColumn.style.marginLeft = (originalWidth + 20) + 'px';
+                                                if (navColumn) navColumn.style.visibility = 'visible';
+                                                localStorage.setItem('sidebarCollapsed', 'false');
+                                              } else {
+                                                // 收起
+                                                originalWidth = leftColumn.offsetWidth;
+                                                localStorage.setItem('sidebarOriginalWidth', originalWidth);
+                                                leftColumn.style.width = collapsedWidth + 'px';
+                                                leftColumn.style.maxWidth = collapsedWidth + 'px';
+                                                leftColumn.style.minWidth = collapsedWidth + 'px';
+                                                leftColumn.style.overflow = 'hidden';
+                                                bodyColumn.style.marginLeft = (collapsedWidth + 20) + 'px';
+                                                if (navColumn) navColumn.style.visibility = 'hidden';
+                                                localStorage.setItem('sidebarCollapsed', 'true');
+                                              }
+                                              isSidebarCollapsed = !isSidebarCollapsed;
+                                              updateToggleBtn();
+                                            }
+
+                                            sidebarToggleBtn.addEventListener('click', function(event) {
+                                              event.preventDefault();
+                                              event.stopPropagation();
+                                              toggleSidebar();
+                                            });
+
+                                            // 初始化收起状态
+                                            if (isSidebarCollapsed) {
+                                              leftColumn.style.width = collapsedWidth + 'px';
+                                              leftColumn.style.maxWidth = collapsedWidth + 'px';
+                                              leftColumn.style.minWidth = collapsedWidth + 'px';
+                                              leftColumn.style.overflow = 'hidden';
+                                              bodyColumn.style.marginLeft = (collapsedWidth + 20) + 'px';
+                                              if (navColumn) navColumn.style.visibility = 'hidden';
+                                            }
+                                            updateToggleBtn();
 
                                             // ========== 一键展开/收缩按钮 ==========
                                             var navColumn = document.getElementById('navcolumn');
