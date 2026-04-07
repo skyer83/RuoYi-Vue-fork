@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Maven 2.0" xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project name="Maven Site" xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
   <bannerLeft>
     <name>Maven</name>
@@ -24,12 +24,14 @@
     <menu name="我的文档">
       <item name="首页" href="index.html"/>
       <item name="maven-archetype-site介绍" href="26040301_maven-archetype-site/26040302_maven-archetype-site介绍.html">
-        <item name="支持MD格式" href="26040301_maven-archetype-site/26040303_如何支持md格式文档.html"/>
-        <item name="支持中文" href="26040301_maven-archetype-site/26040304_如何支持中文.html"/>
-        <item name="自定义首页" href="26040301_maven-archetype-site/26040305_如何自定义首页.html"/>
+        <item name="如何支持md格式文档" href="26040301_maven-archetype-site/26040303_如何支持md格式文档.html"/>
+        <item name="如何支持中文" href="26040301_maven-archetype-site/26040304_如何支持中文.html"/>
+        <item name="如何自定义首页" href="26040301_maven-archetype-site/26040305_如何自定义首页.html"/>
+        <item name="支持菜单展开、收缩功能" href="26040301_maven-archetype-site/26040306_支持菜单展开、收缩功能.html"/>
+        <item name="菜单栏自适应宽度、支持拖拽" href="26040301_maven-archetype-site/26040307_菜单栏自适应宽度、支持拖拽.html"/>
       </item>
-      <item name="项目Git提交规范说明" href="26040302_项目Git提交规范说明/26040301_介绍.html">
-        <item name="26040302_Maven自动配置Git钩子终极方案" href="26040302_项目Git提交规范说明/26040302_Maven自动配置Git钩子终极方案.html"/>
+      <item name="项目Git提交规范说明" href="26040302_项目Git提交规范说明/26040301_项目Git提交规范说明.html">
+        <item name="Maven自动配置Git钩子终极方案" href="26040302_项目Git提交规范说明/26040302_Maven自动配置Git钩子终极方案.html"/>
         <item name="项目Git提交规范说明（团队版）" href="26040302_项目Git提交规范说明/26040303_项目Git提交规范说明（团队版）.html"/>
       </item>
     </menu>
