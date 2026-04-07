@@ -78,6 +78,8 @@
                                             var bodyColumn = document.getElementById('bodyColumn');
                                             if (!leftColumn || !bodyColumn) return;
 
+                                            bodyColumn.style.marginLeft = (parseInt(leftColumn.offsetWidth) + 10 + 20) + 'px';
+
                                             var resizer = document.createElement('div');
                                             resizer.id = 'menuResizer';
                                             resizer.style.cssText = 'position:absolute;right:0;top:0;bottom:0;width:5px;cursor:col-resize;background:transparent;z-index:1003';
@@ -157,7 +159,7 @@
                                                 leftColumn.style.setProperty('width', originalWidth + 'px', 'important');
                                                 leftColumn.style.maxWidth = originalWidth + 'px';
                                                 leftColumn.style.minWidth = '180px';
-                                                leftColumn.style.overflow = 'visible';
+                                                leftColumn.style.overflowX = 'auto';
                                                 bodyColumn.style.marginLeft = (originalWidth + 20) + 'px';
                                                 if (navColumn) navColumn.style.visibility = 'visible';
                                                 if (resizer) resizer.style.visibility = 'visible';
@@ -169,7 +171,7 @@
                                                 leftColumn.style.setProperty('width', collapsedWidth + 'px', 'important');
                                                 leftColumn.style.maxWidth = collapsedWidth + 'px';
                                                 leftColumn.style.minWidth = collapsedWidth + 'px';
-                                                leftColumn.style.overflow = 'hidden';
+                                                leftColumn.style.overflowX = 'hidden';
                                                 bodyColumn.style.marginLeft = (collapsedWidth + 20) + 'px';
                                                 if (navColumn) navColumn.style.visibility = 'hidden';
                                                 if (resizer) resizer.style.visibility = 'hidden';
