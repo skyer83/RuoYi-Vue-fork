@@ -21,7 +21,7 @@
     </links>
 
     <!-- 多层目录菜单示例 -->
-    <menu name="我的文档">
+    <menu name="框架说明文档">
       <item name="首页" href="index.html"/>
       <item name="maven-archetype-site介绍" href="26040301_maven-archetype-site/26040302_maven-archetype-site介绍.html">
         <item name="如何支持md格式文档" href="26040301_maven-archetype-site/26040303_如何支持md格式文档.html"/>

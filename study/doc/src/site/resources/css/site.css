@@ -26,7 +26,7 @@
 /* 主内容区域自动填充剩余空间 */
 #bodyColumn {
     display: block;
-    margin-left: 220px;
+    margin-left: 350px;
     transition: margin-left 0.1s ease;
 }
 
