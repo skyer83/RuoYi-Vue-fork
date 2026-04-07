@@ -55,53 +55,6 @@
     font-weight: normal;
 }
 
-/* ========== 菜单折叠功能 ========== */
-
-/* 有子菜单的菜单项样式 */
-#leftColumn li.expanded > a,
-#leftColumn li.collapsed > a {
-    position: relative;
-    padding-left: 16px;
-    cursor: pointer;
-}
-
-/* 三角符号 */
-#leftColumn li.expanded > a::before,
-#leftColumn li.collapsed > a::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    cursor: pointer;
-}
-
-/* 展开状态：向下三角 */
-#leftColumn li.expanded > a::before {
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 8px solid #666;
-}
-
-/* 收起状态：向右三角 */
-#leftColumn li.collapsed > a::before {
-    border-left: 8px solid #666;
-    border-right: 0;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-}
-
-/* 鼠标悬停三角符号变色 */
-#leftColumn li.expanded > a:hover::before {
-    border-top-color: #333;
-}
-
-#leftColumn li.collapsed > a:hover::before {
-    border-left-color: #333;
-}
-
 /* 收起状态隐藏子菜单 */
 #leftColumn li.collapsed > ul {
     display: none;
