@@ -1,12 +1,10 @@
 /*
- * 自定义样式：菜单栏宽度自适应 + 拖拽调整 + 选中高亮
+ * 自定义样式：菜单栏宽度自适应 + 拖拽调整 + 选中高亮 + 菜单折叠
  */
 
 /* 左侧菜单栏内容 */
 #navcolumn li.none {
-    /*text-indent: -1em;*/
     text-indent: 0;
-    /*margin-left: 1em;*/
     margin-left: 0;
 }
 
@@ -22,6 +20,7 @@
 /* 菜单项内容不换行，确保宽度计算正确 */
 #leftColumn li {
     white-space: nowrap;
+    position: relative;
 }
 
 /* 主内容区域自动填充剩余空间 */
@@ -50,11 +49,62 @@
 /* 选中的菜单项高亮 */
 #leftColumn li strong {
     display: block;
-    /*padding: 3px 0;*/
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #fff !important;
     border-radius: 4px;
     font-weight: normal;
+}
+
+/* ========== 菜单折叠功能 ========== */
+
+/* 有子菜单的菜单项样式 */
+#leftColumn li.expanded > a,
+#leftColumn li.collapsed > a {
+    position: relative;
+    padding-left: 16px;
+    cursor: pointer;
+}
+
+/* 三角符号 */
+#leftColumn li.expanded > a::before,
+#leftColumn li.collapsed > a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    cursor: pointer;
+}
+
+/* 展开状态：向下三角 */
+#leftColumn li.expanded > a::before {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid #666;
+}
+
+/* 收起状态：向右三角 */
+#leftColumn li.collapsed > a::before {
+    border-left: 8px solid #666;
+    border-right: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+}
+
+/* 鼠标悬停三角符号变色 */
+#leftColumn li.expanded > a:hover::before {
+    border-top-color: #333;
+}
+
+#leftColumn li.collapsed > a:hover::before {
+    border-left-color: #333;
+}
+
+/* 收起状态隐藏子菜单 */
+#leftColumn li.collapsed > ul {
+    display: none;
 }
 
 /* 响应式布局：小屏幕时菜单占满宽度 */
