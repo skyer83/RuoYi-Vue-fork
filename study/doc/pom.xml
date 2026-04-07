@@ -99,8 +99,8 @@
 
                                             document.addEventListener('mousemove', function(event) {
                                               if (!isDragging) return;
-                                              var newWidth = Math.max(180, Math.min(500, startWidth + (event.clientX - startX)));
-                                              leftColumn.style.width = newWidth + 'px';
+                                              var newWidth = Math.max(180, Math.min(350, startWidth + (event.clientX - startX)));
+                                              leftColumn.style.setProperty('width', newWidth + 'px', 'important');
                                               leftColumn.style.maxWidth = newWidth + 'px';
                                               bodyColumn.style.marginLeft = (newWidth + 20) + 'px';
                                               localStorage.setItem('menuWidth', newWidth);
@@ -120,7 +120,7 @@
                                             var savedWidth = localStorage.getItem('menuWidth');
                                             if (savedWidth) {
                                               savedWidth = parseInt(savedWidth);
-                                              leftColumn.style.width = savedWidth + 'px';
+                                              leftColumn.style.setProperty('width', savedWidth + 'px', 'important');
                                               leftColumn.style.maxWidth = savedWidth + 'px';
                                               bodyColumn.style.marginLeft = (savedWidth + 20) + 'px';
                                             }
@@ -149,27 +149,30 @@
                                             }
 
                                             var navColumn = document.getElementById('navcolumn');
+                                            var resizer = document.getElementById('menuResizer');
 
                                             function toggleSidebar() {
                                               if (isSidebarCollapsed) {
                                                 // 展开
-                                                leftColumn.style.width = originalWidth + 'px';
+                                                leftColumn.style.setProperty('width', originalWidth + 'px', 'important');
                                                 leftColumn.style.maxWidth = originalWidth + 'px';
                                                 leftColumn.style.minWidth = '180px';
                                                 leftColumn.style.overflow = 'visible';
                                                 bodyColumn.style.marginLeft = (originalWidth + 20) + 'px';
                                                 if (navColumn) navColumn.style.visibility = 'visible';
+                                                if (resizer) resizer.style.visibility = 'visible';
                                                 localStorage.setItem('sidebarCollapsed', 'false');
                                               } else {
                                                 // 收起
                                                 originalWidth = leftColumn.offsetWidth;
                                                 localStorage.setItem('sidebarOriginalWidth', originalWidth);
-                                                leftColumn.style.width = collapsedWidth + 'px';
+                                                leftColumn.style.setProperty('width', collapsedWidth + 'px', 'important');
                                                 leftColumn.style.maxWidth = collapsedWidth + 'px';
                                                 leftColumn.style.minWidth = collapsedWidth + 'px';
                                                 leftColumn.style.overflow = 'hidden';
                                                 bodyColumn.style.marginLeft = (collapsedWidth + 20) + 'px';
                                                 if (navColumn) navColumn.style.visibility = 'hidden';
+                                                if (resizer) resizer.style.visibility = 'hidden';
                                                 localStorage.setItem('sidebarCollapsed', 'true');
                                               }
                                               isSidebarCollapsed = !isSidebarCollapsed;
@@ -184,12 +187,13 @@
 
                                             // 初始化收起状态
                                             if (isSidebarCollapsed) {
-                                              leftColumn.style.width = collapsedWidth + 'px';
+                                              leftColumn.style.setProperty('width', collapsedWidth + 'px', 'important');
                                               leftColumn.style.maxWidth = collapsedWidth + 'px';
                                               leftColumn.style.minWidth = collapsedWidth + 'px';
                                               leftColumn.style.overflow = 'hidden';
                                               bodyColumn.style.marginLeft = (collapsedWidth + 20) + 'px';
                                               if (navColumn) navColumn.style.visibility = 'hidden';
+                                              if (resizer) resizer.style.visibility = 'hidden';
                                             }
                                             updateToggleBtn();
 
