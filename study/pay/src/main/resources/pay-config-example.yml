@@ -4,23 +4,25 @@
 pay:
   # 支付宝配置
   alipay:
-    app-id: your_app_id
-    private-key: your_private_key
-    alipay-public-key: alipay_public_key
-    notify-url: https://your-domain.com/api
-    return-url: https://your-domain.com/subscription/result
-    sign-type: RSA2
-    charset: UTF-8
-    gateway-url: https://openapi.alipay.com/gateway.do
-    sandbox: false
+    app-id: your_app_id  # 支付宝应用APPID，在支付宝开放平台创建应用后获得
+    private-key: your_private_key  # 应用私钥，用于签名请求，需与应用公钥配对使用
+    alipay-public-key: alipay_public_key  # 支付宝公钥，用于验证支付宝返回的签名（不是应用公钥）
+    notify-url: https://your-domain.com/api  # 异步回调地址，支付宝支付结果通知的接收地址，必须公网可访问
+    return-url: https://your-domain.com/subscription/result  # 同步回调地址，支付完成后跳转的页面地址
+    sign-type: RSA2  # 签名方式，推荐使用 RSA2（SHA256WithRSA），安全性更高
+    charset: UTF-8  # 请求编码格式，固定使用 UTF-8
+    # 正式环境：https://openapi.alipay.com/gateway.do
+    # 沙箱环境：https://openapi.alipaydev.com/gateway.do
+    gateway-url: https://openapi.alipay.com/gateway.do  # 支付宝网关地址，正式环境使用此地址
+    sandbox: false  # 是否使用沙箱环境，true 为沙箱测试环境，false 为正式环境
 
   # 微信支付配置
   wechat:
-    app-id: your_app_id
-    mch-id: your_mch_id
-    private-key-path: /path/to/apiclient_key.pem
-    merchant-serial-number: your_serial_number
-    api-v3-key: your_api_v3_key
-    notify-url: https://your-domain.com/api/wechat
-    contract-notify-url: https://your-domain.com/api/wechat/sign/notify
-    sandbox: false
+    app-id: your_app_id  # 微信商户号绑定的公众号/小程序/APP的 APPID
+    mch-id: your_mch_id  # 微信支付商户号，在微信支付商户平台注册后获得
+    private-key-path: /path/to/apiclient_key.pem  # 商户API私钥文件路径，用于请求签名，在商户平台下载
+    merchant-serial-number: your_serial_number  # 商户API证书序列号，用于标识使用的证书，在商户平台查看
+    api-v3-key: your_api_v3_key  # APIv3密钥，用于回调通知的解密，32位字符串，在商户平台设置
+    notify-url: https://your-domain.com/api/wechat  # 异步回调地址，微信支付结果通知的接收地址，必须公网可访问
+    contract-notify-url: https://your-domain.com/api/wechat/sign/notify  # 签约回调地址，用于支付签约（如自动续费）的通知接收
+    sandbox: false  # 是否使用沙箱环境，true 为沙箱测试环境，false 为正式环境
