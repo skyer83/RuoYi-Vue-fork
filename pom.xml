@@ -229,7 +229,6 @@
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
         <module>study</module>
-        <module>study/doc</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -7,11 +7,19 @@
         <version>3.9.2</version>
     </parent>
 
+    <groupId>com.lulala</groupId>
     <artifactId>study</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
+    <description>
+        学习模块
+    </description>
 
     <name>study</name>
     <url>http://maven.apache.org</url>
+
+    <modules>
+        <module>doc</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
