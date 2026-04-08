@@ -33,9 +33,23 @@
         fields: ['title', 'content'],
         storeFields: ['title', 'url', 'content'],
         tokenize: function(text) {
-          // 自定义分词：保留技术术语如 ISO-8859-1，同时支持中文
-          // 将连字符、下划线、点号连接的单词视为一个token
-          return text.toLowerCase().split(/[^\w\u4e00-\u9fa5\-_.]+/).filter(function(t) { return t.length > 0; });
+          // 自定义分词：支持中文逐字分词，同时保留英文单词和技术术语
+          var tokens = [];
+          // 先按非中文、非英文、非数字字符分割
+          var parts = text.toLowerCase().split(/[^\w\u4e00-\u9fa5]+/).filter(function(t) { return t.length > 0; });
+          parts.forEach(function(part) {
+            // 如果是纯中文（不含英文和数字），逐字拆分
+            if (/^[\u4e00-\u9fa5]+$/.test(part)) {
+              for (var i = 0; i < part.length; i++) {
+                tokens.push(part[i]);
+              }
+            } else {
+              // 包含英文或数字，作为整体保留
+              tokens.push(part);
+            }
+          });
+          // console.log('Tokenize input:', text.substring(0, 50), '-> tokens:', tokens.slice(0, 15));
+          return tokens;
         },
         searchOptions: {
           boost: { title: 3, content: 1 },
