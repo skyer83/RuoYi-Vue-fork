@@ -5,24 +5,28 @@
     var searchIndexLoaded = false;
     
     function initSearch() {
-      var navColumn = document.getElementById('navcolumn');
-      if (!navColumn) return;
+      var bodyColumn = document.getElementById('bodyColumn');
+      if (!bodyColumn) return;
       
-      // 创建搜索容器
+      // 创建搜索容器 - 放在 bodyColumn 右上角
       var searchContainer = document.createElement('div');
       searchContainer.className = 'search-container';
+      searchContainer.style.cssText = 'position:absolute;top:-12px;right:-18px;width:250px;z-index:10000;';
       
       var searchInput = document.createElement('input');
       searchInput.type = 'text';
       searchInput.className = 'search-input';
       searchInput.placeholder = '搜索文档...';
+      searchInput.style.cssText = 'width:100%;padding:6px 10px;border:1px solid #ccc;border-radius:4px;font-size:13px;box-sizing:border-box;';
       
       var searchResults = document.createElement('div');
       searchResults.className = 'search-results';
+      searchResults.style.cssText = 'position:absolute;top:100%;left:0;right:0;margin-top:5px;max-height:400px;overflow-y:auto;background:white;border:1px solid #ddd;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:10001;display:none;';
       
       searchContainer.appendChild(searchInput);
       searchContainer.appendChild(searchResults);
-      navColumn.insertBefore(searchContainer, navColumn.firstChild);
+      bodyColumn.style.position = 'relative';
+      bodyColumn.insertBefore(searchContainer, bodyColumn.firstChild);
       
       // 初始化 MiniSearch
       miniSearch = new MiniSearch({
@@ -47,7 +51,7 @@
       searchInput.addEventListener('input', function() {
         var query = this.value.trim();
         if (query.length < 2) {
-          searchResults.classList.remove('active');
+          searchResults.style.display = 'none';
           return;
         }
         performSearch(query, searchResults);
@@ -56,7 +60,7 @@
       // ESC 键关闭搜索
       searchInput.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-          searchResults.classList.remove('active');
+          searchResults.style.display = 'none';
           this.value = '';
         }
       });
@@ -64,7 +68,7 @@
       // 点击外部关闭搜索
       document.addEventListener('click', function(e) {
         if (!searchContainer.contains(e.target)) {
-          searchResults.classList.remove('active');
+          searchResults.style.display = 'none';
         }
       });
     }
@@ -130,8 +134,8 @@
     
     function performSearch(query, resultsContainer) {
       if (!searchIndexLoaded) {
-        resultsContainer.innerHTML = '<div class="search-loading">正在加载索引...</div>';
-        resultsContainer.classList.add('active');
+        resultsContainer.innerHTML = '<div style="padding:20px;text-align:center;color:#667eea;">正在加载索引...</div>';
+        resultsContainer.style.display = 'block';
         setTimeout(function() { performSearch(query, resultsContainer); }, 500);
         return;
       }
@@ -149,7 +153,7 @@
       console.log('Search results:', results.length);
       
       if (results.length === 0) {
-        resultsContainer.innerHTML = '<div class="search-no-results">未找到匹配结果</div>';
+        resultsContainer.innerHTML = '<div style="padding:20px;text-align:center;color:#999;">未找到匹配结果</div>';
       } else {
         resultsContainer.innerHTML = results.slice(0, 10).map(function(r) {
           var highlightedTitle = highlightText(r.title, query);
@@ -168,9 +172,9 @@
               preview = r.content.substring(0, 100) + '...';
             }
           }
-          return '<div class="search-result-item" data-url="' + r.url + '">' +
-                 '<div class="search-result-title">' + highlightedTitle + '</div>' +
-                 (preview ? '<div class="search-result-preview">' + preview + '</div>' : '') +
+          return '<div class="search-result-item" data-url="' + r.url + '" style="padding:10px 12px;border-bottom:1px solid #eee;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background=\'#f0f0f0\'" onmouseout="this.style.background=\'\'">' +
+                 '<div style="font-weight:bold;color:#333;margin-bottom:4px;">' + highlightedTitle + '</div>' +
+                 (preview ? '<div style="font-size:12px;color:#666;line-height:1.4;">' + preview + '</div>' : '') +
                  '</div>';
         }).join('');
         
@@ -180,7 +184,7 @@
           });
         });
       }
-      resultsContainer.classList.add('active');
+      resultsContainer.style.display = 'block';
     }
     
     function highlightText(text, query) {
@@ -196,6 +200,7 @@
     // ========== 侧边栏拖拽调整宽度 ==========
     var leftColumn = document.getElementById('leftColumn');
     var bodyColumn = document.getElementById('bodyColumn');
+    var navColumn = document.getElementById('navcolumn');
     if (!leftColumn || !bodyColumn) return;
 
     bodyColumn.style.marginLeft = (parseInt(leftColumn.offsetWidth) + 10 + 20) + 'px';
@@ -270,7 +275,6 @@
       }
     }
 
-    var navColumn = document.getElementById('navcolumn');
     var resizerElement = document.getElementById('menuResizer');
 
     function toggleSidebar() {
@@ -317,8 +321,10 @@
     updateToggleBtn();
 
     // ========== 一键展开/收缩按钮 ==========
-    if (navColumn) {
+    navColumn = document.getElementById('navcolumn');
+    if (navColumn && !document.getElementById('expandCollapseButtons')) {
       var buttonContainer = document.createElement('div');
+      buttonContainer.id = 'expandCollapseButtons';
       buttonContainer.style.cssText = 'padding:8px 10px;border-bottom:1px solid #ddd;margin-bottom:10px;display:flex;gap:8px;';
 
       var expandAllBtn = document.createElement('button');
@@ -329,12 +335,9 @@
       collapseAllBtn.textContent = '收起全部';
       collapseAllBtn.style.cssText = 'flex:1;padding:4px 8px;font-size:12px;cursor:pointer;background:#764ba2;color:#fff;border:none;border-radius:4px;';
 
-      var searchContainer = navColumn.querySelector('.search-container');
-      if (searchContainer && searchContainer.nextSibling) {
-        navColumn.insertBefore(buttonContainer, searchContainer.nextSibling);
-      } else {
-        navColumn.insertBefore(buttonContainer, navColumn.firstChild.nextSibling);
-      }
+      buttonContainer.appendChild(expandAllBtn);
+      buttonContainer.appendChild(collapseAllBtn);
+      navColumn.insertBefore(buttonContainer, navColumn.firstChild);
 
       expandAllBtn.addEventListener('click', function() {
         document.querySelectorAll('#navcolumn li').forEach(function(menuItem) {
