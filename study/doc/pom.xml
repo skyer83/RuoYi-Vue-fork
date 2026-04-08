@@ -35,7 +35,7 @@
                 <version>3.12.1</version>
                 <configuration>
                     <!-- 支持的语言：中文（zh）、英文（默认）、法文（fr） -->
-                    <locales>en,fr</locales>
+                    <locales>zh,en,fr</locales>
                     <!-- 注意：defaultLocale 和 skin 参数在 3.12.1 已移除，默认使用 locales 第一个语言 -->
                 </configuration>
                 <dependencies>

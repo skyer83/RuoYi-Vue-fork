@@ -103,6 +103,11 @@
             return r.text(); 
           })
           .then(function(html) {
+            // 先移除图片标签，防止浏览器尝试加载图片导致404错误，如：GET http://localhost:8080/images/apache-maven-project.png 404 (Not Found)
+            // 当使用 tempDiv.innerHTML = html 时，浏览器会解析 HTML 并尝试加载其中的图片资源，
+            // 这些图片路径（如 ../images/...）相对于当前页面路径可能被错误解析，
+            // 解决方案是在设置 innerHTML 之前，先将 HTML 中的图片路径替换为空或者移除图片标签：
+            html = html.replace(/<img[^>]*>/gi, '');
             var tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
             var scripts = tempDiv.querySelectorAll('script, style, nav, #banner, #breadcrumbs, #footer');
@@ -120,11 +125,11 @@
                 title: doc.title,
                 content: content
               });
-              console.log('Indexed:', doc.title, 'Content length:', content.length);
+              // console.log('Indexed:', doc.title, 'Content length:', content.length);
             }
           })
           .catch(function(err) {
-            console.log('Failed to fetch content for:', doc.url, err);
+            console.error('Failed to fetch content for:', doc.url, err);
           })
           .finally(function() {
             pendingFetches--;
