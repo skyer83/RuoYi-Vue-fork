@@ -1,0 +1,26 @@
+# 支付配置示例
+# 将此文件复制到 ruoyi-admin 模块的 resources 目录下，并修改为实际配置
+
+pay:
+  # 支付宝配置
+  alipay:
+    app-id: your_app_id
+    private-key: your_private_key
+    alipay-public-key: alipay_public_key
+    notify-url: https://your-domain.com/api
+    return-url: https://your-domain.com/subscription/result
+    sign-type: RSA2
+    charset: UTF-8
+    gateway-url: https://openapi.alipay.com/gateway.do
+    sandbox: false
+
+  # 微信支付配置
+  wechat:
+    app-id: your_app_id
+    mch-id: your_mch_id
+    private-key-path: /path/to/apiclient_key.pem
+    merchant-serial-number: your_serial_number
+    api-v3-key: your_api_v3_key
+    notify-url: https://your-domain.com/api/wechat
+    contract-notify-url: https://your-domain.com/api/wechat/sign/notify
+    sandbox: false

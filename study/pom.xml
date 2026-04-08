@@ -10,15 +10,15 @@
     <groupId>com.lulala</groupId>
     <artifactId>study</artifactId>
     <packaging>pom</packaging>
+    <name>study</name>
+    <url>http://maven.apache.org</url>
     <description>
         学习模块
     </description>
 
-    <name>study</name>
-    <url>http://maven.apache.org</url>
-
     <modules>
         <module>doc</module>
+        <module>pay</module>
     </modules>
 
     <properties>
