@@ -140,8 +140,8 @@
         return;
       }
       
-      console.log('Searching for:', query);
-      console.log('Total indexed documents:', miniSearch.documentCount);
+      // console.log('Searching for:', query);
+      // console.log('Total indexed documents:', miniSearch.documentCount);
       
       // 使用更精确的搜索选项
       var results = miniSearch.search(query, {
@@ -150,7 +150,7 @@
         prefix: true
       });
       
-      console.log('Search results:', results.length);
+      // console.log('Search results:', results.length);
       
       if (results.length === 0) {
         resultsContainer.innerHTML = '<div style="padding:20px;text-align:center;color:#999;">未找到匹配结果</div>';

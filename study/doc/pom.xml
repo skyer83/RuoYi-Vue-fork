@@ -72,8 +72,7 @@
                             <replacements>
                                 <replacement>
                                     <token><![CDATA[</head>]]></token>
-                                    <value><![CDATA[<link rel="stylesheet" href="../css/search.css" />
-</head>]]></value>
+                                    <value><![CDATA[<link rel="stylesheet" href="../css/search.css" /></head>]]></value>
                                 </replacement>
                             </replacements>
                         </configuration>
@@ -93,8 +92,12 @@
                             <replacements>
                                 <replacement>
                                     <token><![CDATA[</body>]]></token>
-                                    <value><![CDATA[<script src="https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/umd/index.min.js"></script>
-<script src="../js/site-enhancements.js"></script></body>]]></value>
+                                    <value>
+                                        <![CDATA[
+                                            <script src="https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/umd/index.min.js"></script>
+                                            <script src="../js/site-enhancements.js"></script></body>
+                                        ]]>
+                                    </value>
                                 </replacement>
                             </replacements>
                         </configuration>
@@ -114,8 +117,7 @@
                             <replacements>
                                 <replacement>
                                     <token><![CDATA[</head>]]></token>
-                                    <value><![CDATA[<link rel="stylesheet" href="./css/search.css" />
-</head>]]></value>
+                                    <value><![CDATA[<link rel="stylesheet" href="./css/search.css" /></head>]]></value>
                                 </replacement>
                             </replacements>
                         </configuration>
@@ -134,8 +136,12 @@
                             <replacements>
                                 <replacement>
                                     <token><![CDATA[</body>]]></token>
-                                    <value><![CDATA[<script src="https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/umd/index.min.js"></script>
-<script src="./js/site-enhancements.js"></script></body>]]></value>
+                                    <value>
+                                        <![CDATA[
+                                            <script src="https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/umd/index.min.js"></script>
+                                            <script src="./js/site-enhancements.js"></script></body>
+                                        ]]>
+                                    </value>
                                 </replacement>
                             </replacements>
                         </configuration>
