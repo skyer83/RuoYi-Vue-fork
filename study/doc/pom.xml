@@ -49,15 +49,16 @@
             </plugin>
 
             <!--
-                在 site 构建后注入 JavaScript，支持拖拽调整侧边栏宽度和菜单折叠
+                在 site 构建后注入 CSS 和 JavaScript
             -->
             <plugin>
                 <groupId>com.google.code.maven-replacer-plugin</groupId>
                 <artifactId>replacer</artifactId>
                 <version>1.5.3</version>
                 <executions>
+                    <!-- 子目录 HTML 文件（先执行） -->
                     <execution>
-                        <id>add-javascript</id>
+                        <id>add-search-styles-subdir</id>
                         <phase>site</phase>
                         <goals>
                             <goal>replace</goal>
@@ -65,219 +66,76 @@
                         <configuration>
                             <basedir>${project.build.directory}/site</basedir>
                             <includes>
-                                <include>**/*.html</include>
+                                <include>*/*.html</include>
+                                <include>*/*/*.html</include>
+                            </includes>
+                            <replacements>
+                                <replacement>
+                                    <token><![CDATA[</head>]]></token>
+                                    <value><![CDATA[<link rel="stylesheet" href="../css/search.css" />
+</head>]]></value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-minisearch-subdir</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <basedir>${project.build.directory}/site</basedir>
+                            <includes>
+                                <include>*/*.html</include>
+                                <include>*/*/*.html</include>
                             </includes>
                             <replacements>
                                 <replacement>
                                     <token><![CDATA[</body>]]></token>
-                                    <value><![CDATA[<script>
-                                        (function() {
-                                          document.addEventListener('DOMContentLoaded', function() {
-                                            // ========== 侧边栏拖拽调整宽度 ==========
-                                            var leftColumn = document.getElementById('leftColumn');
-                                            var bodyColumn = document.getElementById('bodyColumn');
-                                            if (!leftColumn || !bodyColumn) return;
-
-                                            bodyColumn.style.marginLeft = (parseInt(leftColumn.offsetWidth) + 10 + 20) + 'px';
-
-                                            var resizer = document.createElement('div');
-                                            resizer.id = 'menuResizer';
-                                            resizer.style.cssText = 'position:absolute;right:0;top:0;bottom:0;width:5px;cursor:col-resize;background:transparent;z-index:1003';
-                                            leftColumn.style.position = 'relative';
-                                            leftColumn.appendChild(resizer);
-
-                                            var isDragging = false;
-                                            var startX = 0;
-                                            var startWidth = 0;
-
-                                            resizer.addEventListener('mousedown', function(event) {
-                                              isDragging = true;
-                                              startX = event.clientX;
-                                              startWidth = leftColumn.offsetWidth;
-                                              document.body.style.cursor = 'col-resize';
-                                              document.body.style.userSelect = 'none';
-                                              event.preventDefault();
-                                            });
-
-                                            document.addEventListener('mousemove', function(event) {
-                                              if (!isDragging) return;
-                                              var newWidth = Math.max(180, Math.min(350, startWidth + (event.clientX - startX)));
-                                              leftColumn.style.setProperty('width', newWidth + 'px', 'important');
-                                              leftColumn.style.maxWidth = newWidth + 'px';
-                                              bodyColumn.style.marginLeft = (newWidth + 20) + 'px';
-                                              localStorage.setItem('menuWidth', newWidth);
-                                            });
-
-                                            document.addEventListener('mouseup', function() {
-                                              if (isDragging) {
-                                                isDragging = false;
-                                                document.body.style.cursor = '';
-                                                document.body.style.userSelect = '';
-                                              }
-                                            });
-
-                                            resizer.addEventListener('mouseenter', function() { this.style.background = '#ccc'; });
-                                            resizer.addEventListener('mouseleave', function() { if (!isDragging) this.style.background = 'transparent'; });
-
-                                            var savedWidth = localStorage.getItem('menuWidth');
-                                            if (savedWidth) {
-                                              savedWidth = parseInt(savedWidth);
-                                              leftColumn.style.setProperty('width', savedWidth + 'px', 'important');
-                                              leftColumn.style.maxWidth = savedWidth + 'px';
-                                              bodyColumn.style.marginLeft = (savedWidth + 20) + 'px';
-                                            }
-
-                                            // ========== 收起/展开整个侧边栏按钮 ==========
-                                            var sidebarToggleBtn = document.createElement('button');
-                                            sidebarToggleBtn.id = 'sidebarToggleBtn';
-                                            sidebarToggleBtn.innerHTML = '<<';
-                                            sidebarToggleBtn.style.cssText = 'position:absolute;right:0;top:0;width:24px;padding:0;background:#f5f5f5;color:#666;border:none;border-left:1px solid #ddd;cursor:pointer;z-index:1002;font-size:14px;font-weight:bold;transition:background 0.2s;';
-                                            sidebarToggleBtn.onmouseenter = function() { this.style.background = '#e0e0e0'; };
-                                            sidebarToggleBtn.onmouseleave = function() { this.style.background = '#f5f5f5'; };
-                                            leftColumn.appendChild(sidebarToggleBtn);
-
-                                            var isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-                                            var originalWidth = parseInt(localStorage.getItem('sidebarOriginalWidth')) || 350;
-                                            var collapsedWidth = 24;
-
-                                            function updateToggleBtn() {
-                                              if (isSidebarCollapsed) {
-                                                sidebarToggleBtn.innerHTML = '>>';
-                                                sidebarToggleBtn.style.right = '0';
-                                              } else {
-                                                sidebarToggleBtn.innerHTML = '<<';
-                                                sidebarToggleBtn.style.right = '5px';
-                                              }
-                                            }
-
-                                            var navColumn = document.getElementById('navcolumn');
-                                            var resizer = document.getElementById('menuResizer');
-
-                                            function toggleSidebar() {
-                                              if (isSidebarCollapsed) {
-                                                // 展开
-                                                leftColumn.style.setProperty('width', originalWidth + 'px', 'important');
-                                                leftColumn.style.maxWidth = originalWidth + 'px';
-                                                leftColumn.style.minWidth = '180px';
-                                                leftColumn.style.overflowX = 'auto';
-                                                bodyColumn.style.marginLeft = (originalWidth + 20) + 'px';
-                                                if (navColumn) navColumn.style.visibility = 'visible';
-                                                if (resizer) resizer.style.visibility = 'visible';
-                                                localStorage.setItem('sidebarCollapsed', 'false');
-                                              } else {
-                                                // 收起
-                                                originalWidth = leftColumn.offsetWidth;
-                                                localStorage.setItem('sidebarOriginalWidth', originalWidth);
-                                                leftColumn.style.setProperty('width', collapsedWidth + 'px', 'important');
-                                                leftColumn.style.maxWidth = collapsedWidth + 'px';
-                                                leftColumn.style.minWidth = collapsedWidth + 'px';
-                                                leftColumn.style.overflowX = 'hidden';
-                                                bodyColumn.style.marginLeft = (collapsedWidth + 20) + 'px';
-                                                if (navColumn) navColumn.style.visibility = 'hidden';
-                                                if (resizer) resizer.style.visibility = 'hidden';
-                                                localStorage.setItem('sidebarCollapsed', 'true');
-                                              }
-                                              isSidebarCollapsed = !isSidebarCollapsed;
-                                              updateToggleBtn();
-                                            }
-
-                                            sidebarToggleBtn.addEventListener('click', function(event) {
-                                              event.preventDefault();
-                                              event.stopPropagation();
-                                              toggleSidebar();
-                                            });
-
-                                            // 初始化收起状态
-                                            if (isSidebarCollapsed) {
-                                              leftColumn.style.setProperty('width', collapsedWidth + 'px', 'important');
-                                              leftColumn.style.maxWidth = collapsedWidth + 'px';
-                                              leftColumn.style.minWidth = collapsedWidth + 'px';
-                                              leftColumn.style.overflow = 'hidden';
-                                              bodyColumn.style.marginLeft = (collapsedWidth + 20) + 'px';
-                                              if (navColumn) navColumn.style.visibility = 'hidden';
-                                              if (resizer) resizer.style.visibility = 'hidden';
-                                            }
-                                            updateToggleBtn();
-
-                                            // ========== 一键展开/收缩按钮 ==========
-                                            var navColumn = document.getElementById('navcolumn');
-                                            if (navColumn) {
-                                              var buttonContainer = document.createElement('div');
-                                              buttonContainer.style.cssText = 'padding:8px 10px;border-bottom:1px solid #ddd;margin-bottom:10px;display:flex;gap:8px;';
-
-                                              var expandAllBtn = document.createElement('button');
-                                              expandAllBtn.textContent = '展开全部';
-                                              expandAllBtn.style.cssText = 'flex:1;padding:4px 8px;font-size:12px;cursor:pointer;background:#667eea;color:#fff;border:none;border-radius:4px;';
-
-                                              var collapseAllBtn = document.createElement('button');
-                                              collapseAllBtn.textContent = '收起全部';
-                                              collapseAllBtn.style.cssText = 'flex:1;padding:4px 8px;font-size:12px;cursor:pointer;background:#764ba2;color:#fff;border:none;border-radius:4px;';
-
-                                              buttonContainer.appendChild(expandAllBtn);
-                                              buttonContainer.appendChild(collapseAllBtn);
-                                              navColumn.insertBefore(buttonContainer, navColumn.firstChild);
-
-                                              expandAllBtn.addEventListener('click', function() {
-                                                document.querySelectorAll('#navcolumn li').forEach(function(menuItem) {
-                                                  if (menuItem.querySelector(':scope > ul')) {
-                                                    menuItem.classList.remove('collapsed');
-                                                    menuItem.classList.add('expanded');
-                                                  }
-                                                });
-                                                localStorage.removeItem('menuExpanded');
-                                              });
-
-                                              collapseAllBtn.addEventListener('click', function() {
-                                                var menuStates = {};
-                                                document.querySelectorAll('#navcolumn li').forEach(function(menuItem) {
-                                                  if (menuItem.querySelector(':scope > ul')) {
-                                                    menuItem.classList.remove('expanded');
-                                                    menuItem.classList.add('collapsed');
-                                                    var menuLink = menuItem.querySelector(':scope > a') || menuItem.querySelector(':scope > strong');
-                                                    if (menuLink) {
-                                                      var menuKey = menuLink.getAttribute('href') || menuLink.textContent;
-                                                      menuStates[menuKey] = false;
-                                                    }
-                                                  }
-                                                });
-                                                localStorage.setItem('menuExpanded', JSON.stringify(menuStates));
-                                              });
-                                            }
-
-                                            // ========== 菜单折叠功能 ==========
-                                            var savedMenuStates = JSON.parse(localStorage.getItem('menuExpanded') || '{}');
-                                            document.querySelectorAll('#navcolumn li').forEach(function(menuItem) {
-                                              var subMenu = menuItem.querySelector(':scope > ul');
-                                              if (!subMenu) return;
-
-                                              var menuLink = menuItem.querySelector(':scope > a') || menuItem.querySelector(':scope > strong');
-                                              if (!menuLink) return;
-
-                                              var linkHref = menuLink.getAttribute('href') || '';
-                                              var menuKey = linkHref || menuLink.textContent;
-
-                                              if (!menuItem.classList.contains('expanded') && !menuItem.classList.contains('collapsed')) {
-                                                menuItem.classList.add('expanded');
-                                              }
-                                              if (savedMenuStates[menuKey] === false) {
-                                                menuItem.classList.remove('expanded');
-                                                menuItem.classList.add('collapsed');
-                                              }
-
-                                              menuItem.addEventListener('click', function(event) {
-                                                if (event.target !== menuItem) return;
-                                                event.preventDefault();
-                                                event.stopPropagation();
-                                                menuItem.classList.toggle('expanded');
-                                                menuItem.classList.toggle('collapsed');
-                                                savedMenuStates = JSON.parse(localStorage.getItem('menuExpanded') || '{}');
-                                                savedMenuStates[menuKey] = menuItem.classList.contains('expanded');
-                                                localStorage.setItem('menuExpanded', JSON.stringify(savedMenuStates));
-                                              });
-                                            });
-                                          });
-                                        })();
-                                    </script></body>]]></value>
+                                    <value><![CDATA[<script src="https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/umd/index.min.js"></script>
+<script src="../js/site-enhancements.js"></script></body>]]></value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                    <!-- 根目录 HTML 文件（后执行） -->
+                    <execution>
+                        <id>add-search-styles-root</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <basedir>${project.build.directory}/site</basedir>
+                            <includes>
+                                <include>*.html</include>
+                            </includes>
+                            <replacements>
+                                <replacement>
+                                    <token><![CDATA[</head>]]></token>
+                                    <value><![CDATA[<link rel="stylesheet" href="./css/search.css" />
+</head>]]></value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-minisearch-root</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <basedir>${project.build.directory}/site</basedir>
+                            <includes>
+                                <include>*.html</include>
+                            </includes>
+                            <replacements>
+                                <replacement>
+                                    <token><![CDATA[</body>]]></token>
+                                    <value><![CDATA[<script src="https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/umd/index.min.js"></script>
+<script src="./js/site-enhancements.js"></script></body>]]></value>
                                 </replacement>
                             </replacements>
                         </configuration>
