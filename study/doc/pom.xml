@@ -92,9 +92,15 @@
                             <replacements>
                                 <replacement>
                                     <token><![CDATA[</body>]]></token>
+<!--                                    <value>-->
+<!--                                        <![CDATA[-->
+<!--                                            <script src="https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/umd/index.min.js"></script>-->
+<!--                                            <script src="../js/site-enhancements.js"></script></body>-->
+<!--                                        ]]>-->
+<!--                                    </value>-->
                                     <value>
                                         <![CDATA[
-                                            <script src="https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/umd/index.min.js"></script>
+                                            <script src="../js/minisearch-6-3-0/index.js"></script>
                                             <script src="../js/site-enhancements.js"></script></body>
                                         ]]>
                                     </value>
@@ -136,9 +142,15 @@
                             <replacements>
                                 <replacement>
                                     <token><![CDATA[</body>]]></token>
+<!--                                    <value>-->
+<!--                                        <![CDATA[-->
+<!--                                            <script src="https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/umd/index.min.js"></script>-->
+<!--                                            <script src="./js/site-enhancements.js"></script></body>-->
+<!--                                        ]]>-->
+<!--                                    </value>-->
                                     <value>
                                         <![CDATA[
-                                            <script src="https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/umd/index.min.js"></script>
+                                            <script src="./js/minisearch-6-3-0/index.js"></script>
                                             <script src="./js/site-enhancements.js"></script></body>
                                         ]]>
                                     </value>
